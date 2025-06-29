@@ -2,11 +2,7 @@ import { Request, Response, RequestHandler } from 'express';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
-import {
-  PrismaClient,
-  TransactionStatus,
-  VTUStatus,
-} from '../generated/prisma';
+import { PrismaClient, TransactionStatus, VTUStatus } from '@prisma/client';
 
 dotenv.config();
 

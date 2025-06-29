@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
 import axios from 'axios';
-import { PrismaClient, VTUCategory } from '../generated/prisma';
+import { PrismaClient, VTUCategory } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
