@@ -11,8 +11,7 @@ import {
 dotenv.config();
 
 const FLW_SECRET_KEY = process.env.FLW_SECRET_KEY!;
-const FLW_BASE_URL = process.env.BASE_URL!;
-
+const FLW_BASE_URL = process.env.BASE_URL || 'https://api.flutterwave.com/v3';
 const prisma = new PrismaClient();
 
 export const initiatePayment: RequestHandler = async (
