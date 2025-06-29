@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(uuid())
+  phone String @unique
+  password String
+  balance Decimal @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // VTUTransaction VTUTransaction[]
+
+  Account Account[]
+}
+
+model Account {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  name        String
+  entries     LedgerEntry[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model LedgerEntry {
+  id          String    @id @default(uuid())
+  accountId   String
+  account     Account   @relation(fields: [accountId], references: [id])
+  amount      Decimal
+  currency    String    @default("NGN")
+  type        EntryType 
+  // transaction Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String
+  createdAt   DateTime  @default(now())
+}
+
+model Transaction {
+  id          String    @id @default(uuid())
+  reference   String    @unique
+  description String
+  // entries     LedgerEntry[]
+  status      TransactionStatus @default(PENDING)
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+
+  // VTUTransaction VTUTransaction[]
+}
+
+model VTUService {
+  id          String    @id @default(uuid())
+  name        String
+  code        String    @unique
+  category    VTUCategory
+  provider    String
+  rates       Json?
+  sellingPrice Float @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // VTUTransaction VTUTransaction[]
+}
+
+enum VTUCategory {
+  AIRTIME
+  DATA
+  ELECTRICITY
+  CABLE_TV
+  INTERNET
+}
+
+enum EntryType {
+  CREDIT
+  DEBIT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REVERSED
+}
+
+model VTUTransaction {
+  id          String    @id @default(uuid())
+  email       String
+  userId      String
+  // user        User      @relation(fields: [userId], references: [id])
+  serviceId   String
+  // service     VTUService @relation(fields: [serviceId], references: [id])
+  amount      Decimal
+  phoneNumber String
+  reference   String    @unique
+  status      VTUStatus @default(PENDING)
+  // transaction Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String
+  providerResponse Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum VTUStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+  REVERSED
+}
+
+

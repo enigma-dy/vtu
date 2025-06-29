@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "VTUService" ADD COLUMN     "sellingPrice" DOUBLE PRECISION NOT NULL DEFAULT 0;
