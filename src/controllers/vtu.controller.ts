@@ -9,9 +9,7 @@ export const fetchVtuDataPricing: RequestHandler = async (
   res: Response,
 ) => {
   try {
-    const response = await axios.get(
-      'https://ebills.africa/wp-json/api/v2/variations/data',
-    );
+    const response = await axios.get(`${process.env.VTU_PROVIDER}`);
 
     const rawPlans = response.data?.data as any[];
 
